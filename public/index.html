@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Cloud Notes</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/tailwindcss@1.3.5/dist/tailwind.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://www.unpkg.com/github-markdown-css@4.0.0/github-markdown.css"
+    />
+  </head>
+  <body>
+    <main id="content" class="flex h-screen">
+      <aside class="text-gray-200 bg-black w-1/6 p-4">
+        <nav></nav>
+        <ul>
+          <li><a href="#">File 1</a></li>
+          <li><a href="#">Fil2</a></li>
+          <li><a href="#">Whatever</a></li>
+          <li><a href="#">Whatever</a></li>
+          <li><a href="#">Whatever</a></li>
+        </ul>
+      </aside>
+      <div class="border-l border-black w-5/12 relative">
+        <textarea id="markdown" class="h-full w-full p-4"></textarea>
+        <button
+          id="save"
+          class="absolute bottom-0 right-0 m-4 bg-green-400 p-4 rounded-lg text-white"
+        >
+          Save
+        </button>
+      </div>
+      <div
+        class="markdown-body border-l border-black w-5/12 p-4"
+        id="output"
+      ></div>
+    </main>
+    <script src="https://unpkg.com/marked@1.0.0/marked.min.js"></script>
+    <script type="module" src="./notes.js"></script>
+  </body>
+</html>
