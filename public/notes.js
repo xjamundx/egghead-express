@@ -1,4 +1,5 @@
 import * as Note from "./model.js";
+import { getID } from "./lib.js";
 
 // dom elements
 const markdown = document.getElementById("markdown");
@@ -77,7 +78,8 @@ function highlightCurrentNote(id) {
 }
 
 function addNote(e) {
-  const id = Note.addNote();
+  const id = getID();
+  Note.addNote(id);
   updateNav();
 }
 

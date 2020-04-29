@@ -1,11 +1,8 @@
-import { getID } from "./lib.js";
-
 // keeps track of all of our files
 // id => { id, name, content }
 const notes = new Map();
 
-export function addNote() {
-  const id = getID();
+export function addNote(id) {
   const note = {
     id,
     name: "Untitled",
