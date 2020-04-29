@@ -1,16 +1,8 @@
-// dom elements
-const markdown = document.getElementById("markdown");
-const output = document.getElementById("output");
-
-// register events
-document.getElementById("markdown").addEventListener("input", handleChange);
-
-// helper functions
-function handleChange(e) {
-  const html = marked(e.target.value);
-  output.innerHTML = html;
+const ids = new Set();
+export function getID() {
+  const array = new Uint32Array(1);
+  let [id] = crypto.getRandomValues(array);
+  if (ids.has(id)) return getID();
+  ids.add(id);
+  return String(id);
 }
-
-export default {
-  handleChange,
-};

@@ -13,15 +13,16 @@
   </head>
   <body>
     <main id="content" class="flex h-screen">
-      <aside class="text-gray-200 bg-black w-1/6 p-4">
-        <nav></nav>
-        <ul>
-          <li><a href="#">File 1</a></li>
-          <li><a href="#">Fil2</a></li>
-          <li><a href="#">Whatever</a></li>
-          <li><a href="#">Whatever</a></li>
-          <li><a href="#">Whatever</a></li>
+      <aside class="text-gray-200 bg-black w-1/6 p-4 relative">
+        <ul id="notes">
+          <!-- to be filled in by js-->
         </ul>
+        <button
+          id="add"
+          class="absolute bottom-0 right-0 m-4 bg-white p-4 rounded-full text-black"
+        >
+          Add
+        </button>
       </aside>
       <div class="border-l border-black w-5/12 relative">
         <input
