@@ -1,5 +1,6 @@
 import * as Note from "./model.js";
 import { getID } from "./lib.js";
+import { getNotes } from "./xhr.js";
 
 // dom elements
 const markdown = document.getElementById("markdown");
@@ -15,12 +16,15 @@ markdown.addEventListener("input", handleContentChange);
 title.addEventListener("input", handleNameChange);
 save.addEventListener("click", handleSave);
 add.addEventListener("click", addNote);
-window.addEventListener("hashchange", handleHashChange, false);
+window.addEventListener("hashchange", onPageChange, false);
 
 // bootstrap the rendering of the page
-onPageLoad();
+getNotes().then((notes) => {
+  Note.populate(notes);
+  onPageChange();
+});
 
-function onPageLoad() {
+function onPageChange() {
   updateNav();
   const id = location.hash.slice(1);
   const note = Note.getNote(id);
@@ -56,10 +60,6 @@ function handleNameChange(e) {
 function handleSave(e) {
   const id = location.hash.slice(1);
   Note.updateNote(id, e.target.value);
-}
-
-function handleHashChange(e) {
-  onPageLoad();
 }
 
 function updateContent(note) {

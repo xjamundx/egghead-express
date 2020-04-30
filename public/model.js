@@ -2,10 +2,16 @@
 // id => { id, name, content }
 const notes = new Map();
 
-export function addNote(id) {
+export function populate(serverNotes) {
+  for (let [id, name] of serverNotes) {
+    addNote(id, name);
+  }
+}
+
+export function addNote(id, name = "Untitled") {
   const note = {
     id,
-    name: "Untitled",
+    name,
     content: "# Untitled",
   };
   notes.set(id, note);
