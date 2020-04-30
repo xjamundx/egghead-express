@@ -49,8 +49,8 @@ function handleSave(e) {
 }
 
 function handleHashChange(e) {
+  updateNav();
   const id = location.hash.slice(1);
-  highlightCurrentNote(id);
   const note = Note.getNote(id);
   if (note) {
     updateTitle(note.name);
@@ -67,16 +67,6 @@ function updateTitle(name) {
   title.value = name;
 }
 
-function highlightCurrentNote(id) {
-  const highlightedClasses = ["selected", "bg-blue-300", "text-black", "block"];
-  const oldLink = document.querySelector(".selected");
-  const link = document.querySelector(`a[href="#${id}"]`);
-
-  // remove the old, add thew new ones
-  if (oldLink) oldLink.classList.remove(...highlightedClasses);
-  if (link) link.classList.add(...highlightedClasses);
-}
-
 function addNote(e) {
   const id = getID();
   Note.addNote(id);
@@ -84,9 +74,12 @@ function addNote(e) {
 }
 
 function updateNav() {
+  const currentID = location.hash.slice(1);
+
   const html = Note.getNotes()
     .map(([id, name]) => {
-      return `<li><a href="#${id}">${name}</a></li>`;
+      const cls = id === currentID ? "bg-blue-300 text-black" : "";
+      return `<li><a href="#${id}" class="block ${cls}">${name}&nbsp;</a></li>`;
     })
     .join("");
   notes.innerHTML = html;
