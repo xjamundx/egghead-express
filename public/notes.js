@@ -1,6 +1,6 @@
 import * as Note from "./model.js";
 import { getID } from "./lib.js";
-import { getNotes } from "./xhr.js";
+import { getNotes, getNote } from "./xhr.js";
 
 // dom elements
 const markdown = document.getElementById("markdown");
@@ -24,10 +24,10 @@ getNotes().then((notes) => {
   onPageChange();
 });
 
-function onPageChange() {
+async function onPageChange() {
   updateNav();
   const id = location.hash.slice(1);
-  const note = Note.getNote(id);
+  const note = await getNote(id);
   input.classList.toggle("pointer-events-none", !note);
   input.classList.toggle("opacity-50", !note);
   if (note) {
