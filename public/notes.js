@@ -8,6 +8,7 @@ const save = document.getElementById("save");
 const add = document.getElementById("add");
 const title = document.getElementById("title");
 const notes = document.getElementById("notes");
+const input = document.getElementById("input");
 
 // register events
 markdown.addEventListener("input", handleContentChange);
@@ -16,11 +17,20 @@ save.addEventListener("click", handleSave);
 add.addEventListener("click", addNote);
 window.addEventListener("hashchange", handleHashChange, false);
 
-// kind of bootstrap the rendering of the page
+// bootstrap the rendering of the page
 onPageLoad();
 
 function onPageLoad() {
   updateNav();
+  const id = location.hash.slice(1);
+  const note = Note.getNote(id);
+  input.classList.toggle("pointer-events-none", !note);
+  input.classList.toggle("opacity-50", !note);
+  if (note) {
+    updateTitle(note.name);
+    updateContent(note.content);
+    renderMarkdown();
+  }
 }
 
 // helper functions
@@ -49,14 +59,7 @@ function handleSave(e) {
 }
 
 function handleHashChange(e) {
-  updateNav();
-  const id = location.hash.slice(1);
-  const note = Note.getNote(id);
-  if (note) {
-    updateTitle(note.name);
-    updateContent(note.content);
-    renderMarkdown();
-  }
+  onPageLoad();
 }
 
 function updateContent(note) {

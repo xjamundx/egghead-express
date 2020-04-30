@@ -12,7 +12,7 @@
     />
   </head>
   <body>
-    <main id="content" class="flex h-screen">
+    <div id="app" class="flex h-screen">
       <aside class="text-gray-200 bg-black w-1/6 p-4 relative">
         <ul id="notes">
           <!-- to be filled in by js-->
@@ -24,7 +24,7 @@
           Add
         </button>
       </aside>
-      <div class="border-l border-black w-5/12 relative">
+      <main id="input" class="border-l border-black w-5/12 relative">
         <input
           id="title"
           placeholder="filename"
@@ -37,11 +37,11 @@
         >
           Save
         </button>
-      </div>
-      <div
+      </main>
+      <output
         class="markdown-body border-l border-black w-5/12 p-4"
         id="output"
-      ></div>
+      ></output>
     </main>
     <script src="https://unpkg.com/marked@1.0.0/marked.min.js"></script>
     <script type="module" src="./notes.js"></script>
