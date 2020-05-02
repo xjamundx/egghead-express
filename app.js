@@ -2,16 +2,18 @@ import express from "express";
 import { generateNotes } from "./lib/index.js";
 import routes from "./lib/routes.js";
 import bodyParser from "body-parser";
+import compression from "compression";
+import morgan from "morgan";
 
 generateNotes();
 
 const app = express();
 
-// static routes
-app.use(express.static("public"));
-
 // middleware
+app.use(morgan("dev"));
+app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static("public"));
 
 // routes
 app.use(routes);

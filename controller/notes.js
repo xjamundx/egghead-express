@@ -21,5 +21,7 @@ export function update(req, res, next) {
 
 export function read(req, res, next) {
   const id = req.params.id;
-  res.json({ note: Note.getNote(id) });
+  const note = Note.getNote(id);
+  if (!note) return next(); // what????
+  res.json({ note });
 }

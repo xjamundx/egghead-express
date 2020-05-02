@@ -1,11 +1,18 @@
 export async function getNotes() {
-  const results = await fetch("/notes");
-  const data = await results.json();
+  const res = await fetch("/notes");
+  const data = await res.json();
   return data.notes;
 }
 
 export async function getNote(id) {
-  const results = await fetch(`/notes/${id}`);
-  const data = await results.json();
+  const res = await fetch(`/notes/${id}`);
+  if (res.status === 404) {
+    return null;
+  }
+  const data = await res.json();
   return data.note;
+}
+
+export async function addNote() {
+  //
 }
