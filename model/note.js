@@ -8,20 +8,18 @@ import { save, read } from "../lib/store.js";
 //  lastEdited: Date
 // }
 const NOTES = new Map();
-populateNotes();
+populateNotes().catch((err) => {
+  console.error(err);
+});
 
 async function saveNotes() {
   await save(NOTES);
 }
 
 async function populateNotes() {
-  try {
-    const notes = await read();
-    for (let [id, note] of notes) {
-      NOTES.set(id, note);
-    }
-  } catch (err) {
-    console.error(err);
+  const notes = await read();
+  for (let [id, note] of notes) {
+    NOTES.set(id, note);
   }
 }
 

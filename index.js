@@ -2,9 +2,6 @@ import express from "express";
 import routes from "./routes/index.js";
 import morgan from "morgan";
 
-import { generateNotes } from "./lib/index.js";
-generateNotes();
-
 const app = express();
 
 // middleware
