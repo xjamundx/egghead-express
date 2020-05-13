@@ -10,12 +10,12 @@ export function list(req, res) {
   res.json({ notes });
 }
 
-export function create(req, res) {
+export async function create(req, res) {
   const { title, body } = req.body;
   if (title === undefined || body === undefined) {
     return res.status(400).send("Missing title or body");
   }
-  const note = Note.createNote({ title, body });
+  const note = await Note.createNote({ title, body });
   console.log({ note });
   res.send("ok");
 }
@@ -27,20 +27,20 @@ export function read(req, res) {
   res.json({ note });
 }
 
-export function update(req, res) {
+export async function update(req, res) {
   const { id } = req.params;
   const { title, body } = req.body;
   if (title === undefined && body === undefined) {
     return res.status(400).send("Missing title and body");
   }
-  const note = Note.updateNote(id, { title, body });
+  const note = await Note.updateNote(id, { title, body });
   console.log({ note });
   res.send("ok");
 }
 
-export function deleteNote(req, res) {
+export async function deleteNote(req, res) {
   const { id } = req.params;
-  const success = Note.deleteNote(id);
+  const success = await Note.deleteNote(id);
   console.log(`deleting ${id}`, success);
   res.send("ok");
 }

@@ -1,6 +1,5 @@
 import { v4 as uuid } from "uuid";
-
-const NOTES = new Map();
+import { save, read } from "../lib/store.js";
 
 // Note {
 //  id: string
@@ -8,6 +7,23 @@ const NOTES = new Map();
 //  body: string
 //  lastEdited: Date
 // }
+const NOTES = new Map();
+populateNotes();
+
+async function saveNotes() {
+  await save(NOTES);
+}
+
+async function populateNotes() {
+  try {
+    const notes = await read();
+    for (let [id, note] of notes) {
+      NOTES.set(id, note);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 export function getNotes(sort) {
   const notes = Array.from(NOTES.values());
@@ -21,7 +37,7 @@ export function getNotes(sort) {
   return notes;
 }
 
-export function createNote({ title, body }) {
+export async function createNote({ title, body }) {
   const id = uuid();
   const lastEdited = Date.now();
   const note = {
@@ -31,10 +47,11 @@ export function createNote({ title, body }) {
     body,
   };
   NOTES.set(id, note);
+  await saveNotes();
   return note;
 }
 
-export function updateNote(id, { title, body }) {
+export async function updateNote(id, { title, body }) {
   if (!NOTES.has(id)) {
     return null;
   }
@@ -42,6 +59,7 @@ export function updateNote(id, { title, body }) {
   note.title = title ?? note.title;
   note.body = body ?? note.body;
   note.lastEdited = Date.now();
+  await saveNotes();
   return { ...note };
 }
 
@@ -53,6 +71,8 @@ export function getNote(id) {
   return { ...note };
 }
 
-export function deleteNote(id) {
-  return NOTES.delete(id);
+export async function deleteNote(id) {
+  const success = NOTES.delete(id);
+  await saveNotes();
+  return success;
 }
