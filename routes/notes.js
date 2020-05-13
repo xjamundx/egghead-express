@@ -6,8 +6,7 @@ export function list(req, res) {
   if (!(sort === "asc" || sort === "desc")) {
     return res.status(400).send("Invalid sort Params");
   }
-  const notes = Note.getNotes();
-  console.log({ notes });
+  const notes = Note.getNotes(sort);
   res.json({ notes });
 }
 

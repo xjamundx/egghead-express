@@ -9,8 +9,16 @@ const NOTES = new Map();
 //  lastEdited: Date
 // }
 
-export function getNotes() {
-  return Array.from(NOTES.values());
+export function getNotes(sort) {
+  const notes = Array.from(NOTES.values());
+  notes.sort((a, b) => {
+    if (sort === "asc") {
+      return a.lastEdited - b.lastEdited;
+    } else {
+      return b.lastEdited - a.lastEdited;
+    }
+  });
+  return notes;
 }
 
 export function createNote({ title, body }) {
@@ -23,7 +31,7 @@ export function createNote({ title, body }) {
     body,
   };
   NOTES.set(id, note);
-  return { ...note };
+  return note;
 }
 
 export function updateNote(id, { title, body }) {
@@ -33,6 +41,7 @@ export function updateNote(id, { title, body }) {
   const note = NOTES.get(id);
   note.title = title ?? note.title;
   note.body = body ?? note.body;
+  note.lastEdited = Date.now();
   return { ...note };
 }
 
