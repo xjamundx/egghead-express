@@ -1,41 +1,47 @@
 import * as Note from "../model/note.js";
 
-const validSorts = new Set(["desc", "asc"]);
 export function list(req, res) {
   let { sort } = req.query;
-  sort = sort ? sort.toLowerCase() : "";
-  if (!validSorts.has(sort)) {
-    return res.status(400).send("Invalid Sort Param");
+  sort = sort ? sort.toLowerCase() : "desc";
+  if (!(sort === "asc" || sort === "desc")) {
+    return res.status(400).send("Invalid sort Params");
   }
+  const notes = Note.getNotes();
+  console.log({ notes });
   res.json({ notes });
 }
 
-export function add(req, res, next) {
+export function create(req, res) {
   const { title, body } = req.body;
   if (title === undefined || body === undefined) {
-    return res.status(400).send("Missing 'title' or 'body'");
+    return res.status(400).send("Missing title or body");
   }
-  const note = Note.addNote({ title, body });
+  const note = Note.createNote({ title, body });
   console.log({ note });
-  res.send("OK");
-}
-
-export function update(req, res, next) {
-  const id = req.params.id;
-  const { title, body } = req.body;
-  if (title === undefined && body === undefined) {
-    return res.status(400).send("Missing 'title' and 'body'");
-  }
-  const note = Note.update(id, { title, body });
-  console.log({ note });
-  res.send("OK");
+  res.send("ok");
 }
 
 export function read(req, res) {
-  const id = req.params.id;
+  // notes/:id
+  const { id } = req.params;
   const note = Note.getNote(id);
-  if (!note) {
-    return res.status(400).send("ID not found");
-  }
   res.json({ note });
+}
+
+export function update(req, res) {
+  const { id } = req.params;
+  const { title, body } = req.body;
+  if (title === undefined && body === undefined) {
+    return res.status(400).send("Missing title and body");
+  }
+  const note = Note.updateNote(id, { title, body });
+  console.log({ note });
+  res.send("ok");
+}
+
+export function deleteNote(req, res) {
+  const { id } = req.params;
+  const success = Note.deleteNote(id);
+  console.log(`deleting ${id}`, success);
+  res.send("ok");
 }
