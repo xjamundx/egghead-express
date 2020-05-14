@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { save, read } from "../lib/store.js";
+import MapStore from "../lib/mapstore.js";
 
 // Note {
 //  id: string
@@ -8,20 +8,18 @@ import { save, read } from "../lib/store.js";
 //  lastEdited: Date
 // }
 const NOTES = new Map();
-populateNotes().catch((err) => {
-  console.error(err);
-});
+const store = new MapStore("notes.json");
 
-async function saveNotes() {
-  await save(NOTES);
-}
-
-async function populateNotes() {
-  const notes = await read();
-  for (let [id, note] of notes) {
-    NOTES.set(id, note);
+store.read().then(
+  (notes) => {
+    for (let [id, note] of notes) {
+      NOTES.set(id, note);
+    }
+  },
+  (err) => {
+    console.error(err);
   }
-}
+);
 
 export function getNotes(sort) {
   const notes = Array.from(NOTES.values());
@@ -45,7 +43,7 @@ export async function createNote({ title, body }) {
     body,
   };
   NOTES.set(id, note);
-  await saveNotes();
+  await store.save(NOTES);
   return note;
 }
 
@@ -57,7 +55,7 @@ export async function updateNote(id, { title, body }) {
   note.title = title ?? note.title;
   note.body = body ?? note.body;
   note.lastEdited = Date.now();
-  await saveNotes();
+  await store.save(NOTES);
   return { ...note };
 }
 
@@ -71,6 +69,6 @@ export function getNote(id) {
 
 export async function deleteNote(id) {
   const success = NOTES.delete(id);
-  await saveNotes();
+  await store.save(NOTES);
   return success;
 }
